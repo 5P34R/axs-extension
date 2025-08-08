@@ -1,0 +1,24 @@
+{
+  "iconDefinitions": {
+    "axs-file": {
+      "iconPath": "../images/icon.svg"
+    },
+    "axs-script": {
+      "iconPath": "../images/icon.svg"
+    }
+  },
+  "file": "default-file",
+  "folder": "default-folder",
+  "fileExtensions": {
+    "axs": "axs-file"
+  },
+  "fileNames": {
+    "metadata.axs": "axs-script",
+    "postex-bof-example.axs": "axs-script",
+    "injection-bof-example.axs": "axs-script",
+    "execution-bof-example.axs": "axs-script"
+  },
+  "languageIds": {
+    "axs": "axs-file"
+  }
+}

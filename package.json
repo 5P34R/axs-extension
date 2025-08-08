@@ -1,0 +1,78 @@
+{
+  "name": "axs",
+  "displayName": "AxScript", 
+  "description": "Language support for AxScript (AdaptixC2 Scripting Language)",
+  "version": "0.1.1",
+  "publisher": "5P34R",
+  "icon": "images/img.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/5P34R/axs-extension.git"
+  },
+  "keywords": [
+    "axs",
+    "adaptix",
+    "adaptixc2",
+    "scripting",
+    "javascript",
+    "syntax highlighting",
+    "autocompletion"
+  ],
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [{
+      "id": "axs",
+      "aliases": ["AxScript", "axs"],
+      "extensions": [".axs"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "axs",
+      "scopeName": "source.axs",
+      "path": "./syntaxes/axs.tmLanguage.json"
+    }],
+    "iconThemes": [
+      {
+        "id": "axs-icons",
+        "label": "AXS Icons",
+        "path": "./icons/axs-icons.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[axs]": {
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.quickSuggestions": {
+          "other": true,
+          "comments": false,
+          "strings": true
+        }
+      }
+    },
+    "snippets": [
+      {
+        "language": "axs",
+        "path": "./snippets/axs.json"
+      }
+    ]
+  },
+  
+  "activationEvents": [
+    "onLanguage:axs"
+  ],
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "20.x",
+    "typescript": "^5.4.5"
+  }
+}

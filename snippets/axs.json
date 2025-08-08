@@ -1,0 +1,170 @@
+{
+  "BOF Command Template": {
+    "prefix": "bof-command",
+    "body": [
+      "var ${1:cmd_name} = ax.create_command(\"${2:command}\", \"${3:Description}\", \"${4:example}\");",
+      "${1:cmd_name}.addArgString(\"${5:arg1}\", ${6:true});",
+      "${1:cmd_name}.addArgFlagString(\"-${7:f}\", \"${8:flag}\", \"${9:Flag description}\", \"${10:}\");",
+      "${1:cmd_name}.setPreHook(function (id, cmdline, parsed_json, ...parsed_lines) {",
+      "\tlet ${5:arg1} = parsed_json[\"${5:arg1}\"];",
+      "\tlet ${8:flag} = parsed_json[\"${8:flag}\"];",
+      "",
+      "\tlet bof_params = ax.bof_pack(\"${11:cstr,int}\", [${5:arg1}, ${8:flag}]);",
+      "\tlet bof_path = ax.script_dir() + \"_bin/${12:bofname}.\" + ax.arch(id) + \".o\";",
+      "",
+      "\tax.execute_alias(id, cmdline, `execute bof \\${bof_path} \\${bof_params}`, \"Task: ${13:BOF Task}\");",
+      "});"
+    ],
+    "description": "Template for creating a BOF command with arguments"
+  },
+
+  "Menu Action": {
+    "prefix": "menu-action",
+    "body": [
+      "let ${1:action_name} = menu.create_action(\"${2:Action Name}\", function(agents_id) {",
+      "\tagents_id.forEach(id => ax.execute_command(id, \"${3:command}\"));",
+      "});",
+      "menu.add_session_access(${1:action_name}, [\"${4:beacon}\"]);"
+    ],
+    "description": "Template for creating a menu action"
+  },
+
+  "AxScript Metadata": {
+    "prefix": "metadata",
+    "body": [
+      "var metadata = {",
+      "\tname: \"${1:Script Name}\",",
+      "\tdescription: \"${2:Script description}\"",
+      "};"
+    ],
+    "description": "AxScript metadata block"
+  },
+
+  "Command Group": {
+    "prefix": "command-group",
+    "body": [
+      "var ${1:group_name} = ax.create_commands_group(\"${2:Group Name}\", [${3:commands}]);",
+      "ax.register_commands_group(${1:group_name}, [\"${4:beacon}\"], [\"${5:windows}\"], []);"
+    ],
+    "description": "Template for creating and registering a command group"
+  },
+
+  "PreHook Function": {
+    "prefix": "prehook",
+    "body": [
+      "function (id, cmdline, parsed_json, ...parsed_lines) {",
+      "\t${1:// Get arguments}",
+      "\tlet ${2:arg} = parsed_json[\"${2:arg}\"];",
+      "",
+      "\t${3:// BOF packing}",
+      "\tlet bof_params = ax.bof_pack(\"${4:cstr}\", [${2:arg}]);",
+      "\tlet bof_path = ax.script_dir() + \"_bin/${5:bofname}.\" + ax.arch(id) + \".o\";",
+      "",
+      "\t${6:// Execute}",
+      "\tax.execute_alias(id, cmdline, `execute bof \\${bof_path} \\${bof_params}`, \"Task: ${7:Task description}\");",
+      "}"
+    ],
+    "description": "PreHook function template"
+  },
+
+  "AX Log": {
+    "prefix": "axlog",
+    "body": "ax.log(\"${1:message}\");",
+    "description": "Log message to AxScript console"
+  },
+
+  "AX Execute": {
+    "prefix": "axexec",
+    "body": "ax.execute_command(\"${1:id}\", \"${2:command}\");",
+    "description": "Execute command on agent"
+  },
+
+  "BOF Pack": {
+    "prefix": "bofpack",
+    "body": "ax.bof_pack(\"${1:cstr,int}\", [${2:args}])",
+    "description": "Pack arguments for BOF execution"
+  },
+
+  "Form Dialog Template": {
+    "prefix": "form-dialog",
+    "body": [
+      "let ${1:label1} = form.create_label(\"${2:Label}:\");",
+      "let ${3:input1} = form.create_textline();",
+      "let ${4:button1} = form.create_button(\"${5:Browse}\");",
+      "",
+      "let ${6:layout} = form.create_gridlayout();",
+      "${6:layout}.addWidget(${1:label1}, 0, 0, 1, 1);",
+      "${6:layout}.addWidget(${3:input1}, 0, 1, 1, 1);",
+      "${6:layout}.addWidget(${4:button1}, 0, 2, 1, 1);",
+      "",
+      "form.connect(${4:button1}, \"clicked\", function() {",
+      "\t${3:input1}.setText(ax.prompt_open_file());",
+      "});",
+      "",
+      "let ${7:dialog} = form.create_dialog(\"${8:Dialog Title}\");",
+      "${7:dialog}.setSize(${9:400}, ${10:200});",
+      "${7:dialog}.setLayout(${6:layout});",
+      "${7:dialog}.setButtonsText(\"${11:OK}\", \"${12:Cancel}\");",
+      "",
+      "if (${7:dialog}.exec() == true) {",
+      "\t${13:// Handle OK button}",
+      "\tlet ${14:value} = ${3:input1}.text();",
+      "\t${15:// Process value}",
+      "}"
+    ],
+    "description": "Template for creating a form dialog with input fields"
+  },
+
+  "Process Browser Menu": {
+    "prefix": "processbrowser-menu",
+    "body": [
+      "let ${1:action_name} = menu.create_action(\"${2:Action Name}\", function(process_list) {",
+      "\t${3:// Create form dialog}",
+      "\tlet ${4:dialog} = form.create_dialog(\"${5:Dialog Title}\");",
+      "\t// Add form elements here",
+      "\t",
+      "\tif (${4:dialog}.exec() == true) {",
+      "\t\tprocess_list.forEach((proc) => {",
+      "\t\t\tlet command = `${6:command} \\${proc.pid}`;",
+      "\t\t\tax.execute_command(proc.agent_id, command);",
+      "\t\t});",
+      "\t}",
+      "});",
+      "menu.add_processbrowser(${1:action_name}, [\"${7:beacon}\"], [\"${8:windows}\"]);"
+    ],
+    "description": "Template for creating a process browser menu action"
+  },
+
+  "Combo Box with Items": {
+    "prefix": "combo-items",
+    "body": [
+      "let ${1:combo} = form.create_combo();",
+      "${1:combo}.addItems([${2:\"item1\", \"item2\", \"item3\"}]);",
+      "",
+      "form.connect(${1:combo}, \"currentTextChanged\", function(text) {",
+      "\t${3:// Handle selection change}",
+      "});"
+    ],
+    "description": "Create a combo box with items and change handler"
+  },
+
+  "File Injection Command": {
+    "prefix": "inject-command",
+    "body": [
+      "var ${1:cmd_name} = ax.create_command(\"${2:command}\", \"${3:Description}\", \"${2:command} ${4:pid} ${5:file}\");",
+      "${1:cmd_name}.addArgInt(\"${6:pid}\", true);",
+      "${1:cmd_name}.addArgFile(\"${7:file}\", true);",
+      "${1:cmd_name}.setPreHook(function (id, cmdline, parsed_json, ...parsed_lines) {",
+      "\tlet ${6:pid} = parsed_json[\"${6:pid}\"];",
+      "\tlet ${8:file_content} = parsed_json[\"${7:file}\"];",
+      "",
+      "\tlet bof_params = ax.bof_pack(\"int,bytes\", [${6:pid}, ${8:file_content}]);",
+      "\tlet bof_path = ax.script_dir() + \"_bin/${9:bofname}.\" + ax.arch(id) + \".o\";",
+      "\tlet message = \"Task: ${10:Task description}\";",
+      "",
+      "\tax.execute_alias(id, cmdline, `execute bof \\${bof_path} \\${bof_params}`, message);",
+      "});"
+    ],
+    "description": "Template for creating a file injection command"
+  }
+}

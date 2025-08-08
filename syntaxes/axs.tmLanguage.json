@@ -1,0 +1,39 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "AxScript",
+	"patterns": [
+		{
+			"include": "source.js"
+		},
+		{
+			"include": "#axs-specific"
+		}
+	],
+	"repository": {
+		"axs-specific": {
+			"patterns": [
+				{
+					"name": "keyword.other.axs",
+					"match": "\\b(metadata|menu|form|layout|dialog)\\b"
+				},
+				{
+					"name": "support.variable.axs",
+					"match": "\\b(ax|menu|form)\\."
+				},
+				{
+					"name": "support.function.axs",
+					"match": "\\b(addArgString|addArgInt|addArgFile|addArgFlagString|addArgFlagInt|setPreHook|addSubCommands|create_action|add_session_access|add_processbrowser|create_label|create_textline|create_textmulti|create_button|create_combo|create_checkbox|create_dialog|create_gridlayout|addWidget|connect|exec|setText|getText|addItems|currentText)\\b"
+				},
+				{
+					"name": "support.type.axs",
+					"match": "\\b(AxCommand|AxCommandsGroup|MenuAction)\\b"
+				},
+				{
+					"name": "string.quoted.double.bof.axs",
+					"match": "\"(cstr|wstr|int|short).*?\""
+				}
+			]
+		}
+	},
+	"scopeName": "source.axs"
+}
